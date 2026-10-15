@@ -1,0 +1,1185 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href="data:," />
+    <title>Briefing — Nexus Conexões</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        color-scheme: light dark;
+        --bg: #f7f5f1;
+        --surface: #ffffff;
+        --surface-2: #efece5;
+        --ink: #16130d;
+        --ink-soft: #5c564a;
+        --line: #ddd6c8;
+        --gold: #a87e1f;
+        --gold-strong: #8f6a15;
+        --gold-soft: #f3e8c8;
+        --accent: #1d3557;
+        --ok: #1e7a3c;
+        --danger: #b3261e;
+        --chip-bg: #ffffff;
+        --chip-on: #16130d;
+        --chat-bot: #ffffff;
+        --chat-user: #1d3557;
+        --shadow: 0 10px 30px rgba(30, 24, 8, .10);
+        --radius: 14px;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #0e0d0b;
+          --surface: #181612;
+          --surface-2: #221f1a;
+          --ink: #f2ede2;
+          --ink-soft: #b3ab9c;
+          --line: #35301f;
+          --gold: #d9b45c;
+          --gold-strong: #e8c876;
+          --gold-soft: #2c2513;
+          --accent: #7aa5d8;
+          --ok: #5cc47e;
+          --danger: #f08a80;
+          --chip-bg: #1e1c17;
+          --chip-on: #f2ede2;
+          --chat-bot: #1e1c17;
+          --chat-user: #274a7c;
+          --shadow: 0 10px 30px rgba(0,0,0,.45);
+        }
+      }
+      * { box-sizing: border-box; }
+      html { -webkit-text-size-adjust: 100%; }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: "Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
+        font-size: 16px;
+        line-height: 1.5;
+      }
+      h1, h2, h3 { font-family: "Sora", "Manrope", sans-serif; margin: 0; }
+      button { font: inherit; cursor: pointer; }
+      input, textarea, select { font: inherit; color: inherit; }
+      .wrap { max-width: 760px; margin: 0 auto; padding: 0 16px 64px; }
+
+      /* ---------- top bar ---------- */
+      .topbar {
+        display: flex; align-items: center; justify-content: space-between;
+        gap: 12px; padding: 16px 0 6px;
+      }
+      .brand { display: flex; align-items: center; gap: 10px; }
+      .brand-mark {
+        width: 38px; height: 38px; border-radius: 10px; flex: 0 0 auto;
+        background: var(--ink); color: var(--gold);
+        display: grid; place-items: center;
+        font-family: "Sora", sans-serif; font-weight: 800; font-size: 19px;
+        letter-spacing: -.02em;
+      }
+      .brand-name { font-family: "Sora", sans-serif; font-weight: 700; font-size: 17px; line-height: 1.15; }
+      .brand-name span { color: var(--gold); }
+      .brand-sub { font-size: 11.5px; color: var(--ink-soft); font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
+      .langs { display: flex; gap: 4px; background: var(--surface-2); border: 1px solid var(--line); border-radius: 999px; padding: 3px; }
+      .langs button {
+        border: 0; background: transparent; color: var(--ink-soft);
+        font-weight: 800; font-size: 13px; padding: 6px 11px; border-radius: 999px;
+      }
+      .langs button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
+
+      /* ---------- hero ---------- */
+      .hero { padding: 18px 0 6px; }
+      .hero h1 { font-size: clamp(26px, 6vw, 36px); font-weight: 800; letter-spacing: -.02em; line-height: 1.12; }
+      .hero p { color: var(--ink-soft); font-size: 16.5px; margin: 10px 0 0; max-width: 56ch; }
+      .prep {
+        margin: 18px 0 0; background: var(--gold-soft); border: 1px solid var(--gold);
+        border-radius: var(--radius); padding: 14px 16px; display: flex; gap: 12px; align-items: flex-start;
+      }
+      .prep svg { flex: 0 0 auto; margin-top: 2px; }
+      .prep strong { display: block; font-family: "Sora", sans-serif; font-size: 15px; }
+      .prep span { font-size: 14.5px; color: var(--ink); opacity: .85; }
+
+      /* ---------- mode switch ---------- */
+      .modes { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 22px 0 6px; }
+      .mode-btn {
+        background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+        padding: 16px 14px; text-align: left; box-shadow: var(--shadow);
+        display: flex; flex-direction: column; gap: 4px;
+      }
+      .mode-btn .mt { font-family: "Sora", sans-serif; font-weight: 700; font-size: 16px; display: flex; align-items: center; gap: 8px; }
+      .mode-btn .md { font-size: 13.5px; color: var(--ink-soft); }
+      .mode-btn[aria-pressed="true"] { border-color: var(--gold); outline: 2px solid var(--gold); outline-offset: -1px; }
+      @media (max-width: 480px) { .modes { grid-template-columns: 1fr; } }
+
+      .progress { height: 6px; background: var(--surface-2); border-radius: 999px; overflow: hidden; margin: 14px 0 4px; }
+      .progress > div { height: 100%; background: var(--gold); width: 0%; transition: width .35s ease; }
+      .progress-label { font-size: 12.5px; color: var(--ink-soft); font-weight: 700; }
+
+      /* ---------- form ---------- */
+      .panel { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; box-shadow: var(--shadow); padding: 22px 18px; margin-top: 14px; }
+      .field { margin-bottom: 18px; }
+      .field:last-child { margin-bottom: 0; }
+      label.fl { display: block; font-weight: 700; font-size: 14.5px; margin-bottom: 6px; }
+      label.fl .req { color: var(--gold-strong); }
+      .hint { font-size: 13px; color: var(--ink-soft); margin: 0 0 8px; }
+      .tin {
+        width: 100%; background: var(--bg); border: 1px solid var(--line); border-radius: 10px;
+        padding: 12px 13px; font-size: 16px;
+      }
+      .tin:focus { outline: 2px solid var(--gold); outline-offset: 0; border-color: var(--gold); }
+      textarea.tin { min-height: 92px; resize: vertical; }
+      .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+      @media (max-width: 560px) { .grid2 { grid-template-columns: 1fr; } }
+
+      .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+      .chip {
+        border: 1px solid var(--line); background: var(--chip-bg); color: var(--ink);
+        border-radius: 999px; padding: 9px 15px; font-weight: 700; font-size: 14px;
+        display: inline-flex; align-items: center; gap: 8px;
+      }
+      .chip[aria-pressed="true"] { background: var(--chip-on); color: var(--bg); border-color: var(--chip-on); }
+      .dots { display: inline-flex; gap: 3px; }
+      .dot { width: 14px; height: 14px; border-radius: 50%; border: 1px solid rgba(0,0,0,.25); display: inline-block; }
+
+      .palette-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+      @media (max-width: 560px) { .palette-grid { grid-template-columns: 1fr; } }
+      .palette {
+        border: 1px solid var(--line); background: var(--chip-bg); border-radius: 12px;
+        padding: 12px 13px; text-align: left; display: flex; align-items: center; gap: 12px; width: 100%;
+      }
+      .palette .dots .dot { width: 20px; height: 20px; }
+      .palette .pn { font-weight: 700; font-size: 14.5px; }
+      .palette .pd { font-size: 12.5px; color: var(--ink-soft); }
+      .palette[aria-pressed="true"] { border-color: var(--gold); outline: 2px solid var(--gold); outline-offset: -1px; }
+
+      .err { color: var(--danger); font-size: 13.5px; font-weight: 700; margin-top: 6px; display: none; }
+      .err.show { display: block; }
+      .tin.bad { border-color: var(--danger); outline-color: var(--danger); }
+
+      .cta-row { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
+      .btn-primary {
+        background: var(--gold); color: #191304; border: 0; border-radius: 12px;
+        padding: 16px 18px; font-family: "Sora", sans-serif; font-weight: 800; font-size: 17px;
+        display: flex; align-items: center; justify-content: center; gap: 10px; text-decoration: none;
+        box-shadow: var(--shadow);
+      }
+      .btn-primary:active { transform: translateY(1px); }
+      .btn-ghost {
+        background: transparent; color: var(--ink); border: 1px solid var(--line); border-radius: 12px;
+        padding: 13px 16px; font-weight: 800; font-size: 15px;
+        display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none;
+      }
+
+      /* ---------- summary ---------- */
+      .summary-box {
+        background: var(--bg); border: 1px dashed var(--gold); border-radius: 12px;
+        padding: 16px; font-size: 14.5px; white-space: pre-wrap; word-break: break-word;
+        max-height: 380px; overflow: auto; margin: 0 0 6px;
+      }
+      .attach-note {
+        display: flex; gap: 10px; align-items: flex-start; background: var(--gold-soft);
+        border-radius: 10px; padding: 12px 14px; font-size: 14px; margin: 14px 0 4px;
+      }
+      .manual-mail { font-size: 14px; color: var(--ink-soft); text-align: center; margin: 10px 0 0; }
+      .manual-mail a { color: var(--gold-strong); font-weight: 800; }
+      .toast {
+        position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%) translateY(20px);
+        background: var(--ink); color: var(--bg); padding: 12px 20px; border-radius: 999px;
+        font-weight: 800; font-size: 14.5px; opacity: 0; pointer-events: none; transition: all .25s ease;
+        box-shadow: var(--shadow); z-index: 50; max-width: 92vw; text-align: center;
+      }
+      .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+      /* ---------- chat ---------- */
+      .chat-log { display: flex; flex-direction: column; gap: 10px; min-height: 120px; }
+      .msg { max-width: 86%; padding: 12px 14px; border-radius: 16px; font-size: 15.5px; line-height: 1.45; }
+      .msg.bot { background: var(--chat-bot); border: 1px solid var(--line); border-bottom-left-radius: 4px; align-self: flex-start; }
+      .msg.user { background: var(--chat-user); color: #fff; border-bottom-right-radius: 4px; align-self: flex-end; }
+      .msg .dots { margin-right: 2px; }
+      .quick { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+      .chat-input { display: flex; gap: 8px; margin-top: 14px; }
+      .chat-input .tin { flex: 1; }
+      .icon-btn {
+        flex: 0 0 auto; width: 48px; height: 48px; border-radius: 12px; border: 1px solid var(--line);
+        background: var(--surface-2); display: grid; place-items: center; color: var(--ink);
+      }
+      .icon-btn.rec { background: var(--danger); color: #fff; border-color: var(--danger); animation: pulse 1.2s infinite; }
+      @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .65; } }
+      @media (prefers-reduced-motion: reduce) { .icon-btn.rec { animation: none; } .progress > div { transition: none; } }
+      .send-btn {
+        flex: 0 0 auto; height: 48px; padding: 0 18px; border-radius: 12px; border: 0;
+        background: var(--gold); color: #191304; font-weight: 800;
+      }
+      .voice-hint { font-size: 12.5px; color: var(--ink-soft); margin-top: 8px; }
+      .hidden { display: none !important; }
+
+      footer { margin-top: 34px; text-align: center; color: var(--ink-soft); font-size: 13.5px; }
+      footer a { color: var(--gold-strong); font-weight: 700; }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="topbar">
+        <div class="brand">
+          <div class="brand-mark">N</div>
+          <div>
+            <div class="brand-name">Nexus <span>Conexões</span></div>
+            <div class="brand-sub" data-i18n="brandSub">Sites · Imagens · Presença digital</div>
+          </div>
+        </div>
+        <div class="langs" role="group" aria-label="Idioma / Language / Idioma">
+          <button type="button" data-lang="pt" aria-pressed="true">PT</button>
+          <button type="button" data-lang="en" aria-pressed="false">EN</button>
+          <button type="button" data-lang="es" aria-pressed="false">ES</button>
+        </div>
+      </div>
+
+      <section class="hero">
+        <h1 data-i18n="title">Vamos montar o seu site do seu jeito</h1>
+        <p data-i18n="subtitle">Pagamento confirmado — agora conte pra gente como você quer o seu site. Responda as perguntas ou converse com a assistente: no final, o briefing chega pra nossa equipe e a criação começa.</p>
+        <div class="prep">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--gold-strong)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+          <div>
+            <strong data-i18n="prepTitle">Tempo de preparação: até 5 dias úteis</strong>
+            <span data-i18n="prepText">Pagamento confirmado + briefing recebido = começamos a criar. Quando estiver pronto, enviamos o seu site.</span>
+          </div>
+        </div>
+      </section>
+
+      <div class="modes" role="group" aria-label="Modo">
+        <button type="button" class="mode-btn" id="modeFormBtn" aria-pressed="true">
+          <span class="mt">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M9 13h6M9 17h6"/></svg>
+            <span data-i18n="modeForm">Responder as perguntas</span>
+          </span>
+          <span class="md" data-i18n="modeFormDesc">Formulário rápido, direto ao ponto.</span>
+        </button>
+        <button type="button" class="mode-btn" id="modeChatBtn" aria-pressed="false">
+          <span class="mt">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+            <span data-i18n="modeChat">Prefiro falar com a assistente</span>
+          </span>
+          <span class="md" data-i18n="modeChatDesc">Conversa passo a passo — pode até ditar por voz.</span>
+        </button>
+      </div>
+
+      <!-- ============ FORM MODE ============ -->
+      <form id="formPanel" class="panel" novalidate>
+        <div class="field">
+          <label class="fl" for="f_business"><span data-i18n="q_business">Nome do negócio</span> <span class="req">*</span></label>
+          <input class="tin" id="f_business" type="text" autocomplete="organization" data-i18n-ph="ph_business" placeholder="Ex.: Barbearia do Carlos" />
+          <div class="err" id="e_business" data-i18n="errRequired">Preencha este campo para continuar.</div>
+        </div>
+        <div class="grid2">
+          <div class="field">
+            <label class="fl" for="f_owner"><span data-i18n="q_owner">Seu nome (responsável)</span> <span class="req">*</span></label>
+            <input class="tin" id="f_owner" type="text" autocomplete="name" data-i18n-ph="ph_owner" placeholder="Seu nome" />
+            <div class="err" id="e_owner" data-i18n="errRequired">Preencha este campo para continuar.</div>
+          </div>
+          <div class="field">
+            <label class="fl" for="f_phone"><span data-i18n="q_phone">WhatsApp / telefone</span> <span class="req">*</span></label>
+            <input class="tin" id="f_phone" type="tel" autocomplete="tel" placeholder="(000) 000-0000" />
+            <div class="err" id="e_phone" data-i18n="errRequired">Preencha este campo para continuar.</div>
+          </div>
+        </div>
+        <div class="field">
+          <label class="fl" data-i18n="q_type">Tipo de negócio</label>
+          <div class="chips" id="typeChips"></div>
+          <input class="tin hidden" id="f_typeOther" type="text" style="margin-top:10px" data-i18n-ph="ph_typeOther" placeholder="Qual é o seu tipo de negócio?" />
+        </div>
+        <div class="grid2">
+          <div class="field">
+            <label class="fl" for="f_email" data-i18n="q_email">E-mail</label>
+            <input class="tin" id="f_email" type="email" autocomplete="email" placeholder="voce@empresa.com" />
+          </div>
+          <div class="field">
+            <label class="fl" for="f_address" data-i18n="q_address">Endereço do negócio</label>
+            <input class="tin" id="f_address" type="text" autocomplete="street-address" data-i18n-ph="ph_address" placeholder="Rua, número, cidade" />
+          </div>
+        </div>
+        <div class="field">
+          <label class="fl" for="f_services" data-i18n="q_services">Serviços e preços</label>
+          <p class="hint" data-i18n="hint_services">Liste os serviços que você quer mostrar no site, com os preços.</p>
+          <textarea class="tin" id="f_services" data-i18n-ph="ph_services" placeholder="Ex.: Corte — $35 · Barba — $30 · Corte + barba — $55"></textarea>
+        </div>
+        <div class="field">
+          <label class="fl" for="f_hours" data-i18n="q_hours">Horários de funcionamento</label>
+          <textarea class="tin" id="f_hours" style="min-height:64px" data-i18n-ph="ph_hours" placeholder="Ex.: Seg a Sáb, 9h às 19h · Domingo fechado"></textarea>
+        </div>
+        <div class="field">
+          <label class="fl" data-i18n="q_palette">Paleta de cores do site</label>
+          <p class="hint" data-i18n="hint_palette">Toque na combinação que mais combina com o seu negócio.</p>
+          <div class="palette-grid" id="paletteGrid"></div>
+        </div>
+        <div class="field">
+          <label class="fl" data-i18n="q_style">Estilo das fotos</label>
+          <div class="chips" id="styleChips"></div>
+        </div>
+        <div class="grid2">
+          <div class="field">
+            <label class="fl" for="f_instagram" data-i18n="q_instagram">Instagram (se tiver)</label>
+            <input class="tin" id="f_instagram" type="text" placeholder="@seunegocio" />
+          </div>
+          <div class="field">
+            <label class="fl" for="f_google" data-i18n="q_google">Link do Google (se tiver)</label>
+            <input class="tin" id="f_google" type="url" data-i18n-ph="ph_google" placeholder="Link do seu negócio no Google" />
+          </div>
+        </div>
+        <div class="field">
+          <label class="fl" data-i18n="q_logo">Já tem logo?</label>
+          <div class="chips" id="logoChips"></div>
+        </div>
+        <div class="field">
+          <label class="fl" for="f_special" data-i18n="q_special">Algum pedido especial?</label>
+          <textarea class="tin" id="f_special" data-i18n-ph="ph_special" placeholder="Ex.: quero um botão de agendamento bem visível, página em dois idiomas..."></textarea>
+        </div>
+        <div class="cta-row">
+          <button type="submit" class="btn-primary" id="formDoneBtn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+            <span data-i18n="btnReview">Revisar e enviar briefing</span>
+          </button>
+        </div>
+      </form>
+
+      <!-- ============ CHAT MODE ============ -->
+      <section id="chatPanel" class="panel hidden" aria-live="polite">
+        <div class="progress"><div id="chatProgress"></div></div>
+        <div class="progress-label" id="chatProgressLabel"></div>
+        <div class="chat-log" id="chatLog" style="margin-top:14px"></div>
+        <div class="quick" id="chatQuick"></div>
+        <div class="chat-input" id="chatInputRow">
+          <input class="tin" id="chatText" type="text" />
+          <button type="button" class="icon-btn" id="micBtn" aria-label="Ditar por voz">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><path d="M12 19v4"/><path d="M8 23h8"/></svg>
+          </button>
+          <button type="button" class="send-btn" id="chatSend" data-i18n="btnSend">Enviar</button>
+        </div>
+        <div class="voice-hint" id="voiceHint"></div>
+      </section>
+
+      <!-- ============ SUMMARY / SEND ============ -->
+      <section id="summaryPanel" class="panel hidden">
+        <h2 style="font-size:21px; margin-bottom:6px" data-i18n="sumTitle">Seu briefing está pronto!</h2>
+        <p style="color:var(--ink-soft); margin:0 0 14px" data-i18n="sumIntro">Confira o resumo abaixo. Ao enviar, nossa equipe recebe tudo e começa a criar o seu site.</p>
+        <pre class="summary-box" id="summaryText"></pre>
+        <div class="attach-note">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--gold-strong)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 auto;margin-top:1px" aria-hidden="true"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+          <span data-i18n="attachNote">Anexe neste e-mail seu logo e suas melhores fotos do negócio.</span>
+        </div>
+        <div class="cta-row">
+          <a class="btn-primary" id="mailtoBtn" href="#">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg>
+            <span data-i18n="btnEmail">Enviar briefing por e-mail</span>
+          </a>
+          <button type="button" class="btn-ghost" id="copyBtn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            <span data-i18n="btnCopy">Copiar resumo</span>
+          </button>
+          <button type="button" class="btn-ghost" id="editBtn" data-i18n="btnEdit">Voltar e ajustar</button>
+        </div>
+        <p class="manual-mail"><span data-i18n="manualMail">Se o e-mail não abrir, envie manualmente para</span> <a href="mailto:nexusconexoes01@gmail.com">nexusconexoes01@gmail.com</a></p>
+        <div class="prep" style="margin-top:18px">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--gold-strong)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+          <div>
+            <strong data-i18n="prepTitle">Tempo de preparação: até 5 dias úteis</strong>
+            <span data-i18n="prepText">Pagamento confirmado + briefing recebido = começamos a criar. Quando estiver pronto, enviamos o seu site.</span>
+          </div>
+        </div>
+      </section>
+
+      <footer>
+        <p data-i18n="footerLine">Página de briefing para clientes Nexus Conexões.</p>
+        <p><span data-i18n="footerSupport">Suporte:</span> <a href="mailto:nexusconexoes01@gmail.com">nexusconexoes01@gmail.com</a></p>
+      </footer>
+    </div>
+    <div class="toast" id="toast" role="status"></div>
+
+<script>
+(function () {
+  "use strict";
+  var NEXUS_EMAIL = "nexusconexoes01@gmail.com";
+
+  /* ================= i18n ================= */
+  var I18N = {
+    pt: {
+      brandSub: "Sites · Imagens · Presença digital",
+      title: "Vamos montar o seu site do seu jeito",
+      subtitle: "Pagamento confirmado — agora conte pra gente como você quer o seu site. Responda as perguntas ou converse com a assistente: no final, o briefing chega pra nossa equipe e a criação começa.",
+      prepTitle: "Tempo de preparação: até 5 dias úteis",
+      prepText: "Pagamento confirmado + briefing recebido = começamos a criar. Quando estiver pronto, enviamos o seu site.",
+      modeForm: "Responder as perguntas",
+      modeFormDesc: "Formulário rápido, direto ao ponto.",
+      modeChat: "Prefiro falar com a assistente",
+      modeChatDesc: "Conversa passo a passo — pode até ditar por voz.",
+      q_business: "Nome do negócio", ph_business: "Ex.: Barbearia do Carlos",
+      q_owner: "Seu nome (responsável)", ph_owner: "Seu nome",
+      q_phone: "WhatsApp / telefone",
+      q_type: "Tipo de negócio", ph_typeOther: "Qual é o seu tipo de negócio?",
+      q_email: "E-mail",
+      q_address: "Endereço do negócio", ph_address: "Rua, número, cidade",
+      q_services: "Serviços e preços",
+      hint_services: "Liste os serviços que você quer mostrar no site, com os preços.",
+      ph_services: "Ex.: Corte — $35 · Barba — $30 · Corte + barba — $55",
+      q_hours: "Horários de funcionamento", ph_hours: "Ex.: Seg a Sáb, 9h às 19h · Domingo fechado",
+      q_palette: "Paleta de cores do site",
+      hint_palette: "Toque na combinação que mais combina com o seu negócio.",
+      q_style: "Estilo das fotos",
+      q_instagram: "Instagram (se tiver)",
+      q_google: "Link do Google (se tiver)", ph_google: "Link do seu negócio no Google",
+      q_logo: "Já tem logo?",
+      q_special: "Algum pedido especial?",
+      ph_special: "Ex.: quero um botão de agendamento bem visível, página em dois idiomas...",
+      errRequired: "Preencha este campo para continuar.",
+      btnReview: "Revisar e enviar briefing",
+      btnSend: "Enviar",
+      sumTitle: "Seu briefing está pronto!",
+      sumIntro: "Confira o resumo abaixo. Ao enviar, nossa equipe recebe tudo e começa a criar o seu site.",
+      attachNote: "Anexe neste e-mail seu logo e suas melhores fotos do negócio.",
+      btnEmail: "Enviar briefing por e-mail",
+      btnCopy: "Copiar resumo",
+      btnEdit: "Voltar e ajustar",
+      manualMail: "Se o e-mail não abrir, envie manualmente para",
+      footerLine: "Página de briefing para clientes Nexus Conexões.",
+      footerSupport: "Suporte:",
+      copied: "Resumo copiado!",
+      copyFail: "Não foi possível copiar — selecione o texto do resumo.",
+      chatPh: "Digite sua resposta...",
+      voiceHint: "Toque no microfone para ditar por voz, ou digite sua resposta.",
+      voiceNoSupport: "Seu navegador não suporta ditado por voz — é só digitar a resposta.",
+      voiceListening: "Ouvindo... fale agora.", micLabel: "Ditar por voz",
+      skip: "Pular",
+      none: "Nenhum",
+      progress: "Pergunta {a} de {b}",
+      types: ["Barbearia", "Restaurante", "Salão de beleza", "Limpeza", "Loja", "Outro"],
+      palettes: [
+        { id: "preto-dourado", name: "Preto e Dourado", desc: "Premium e elegante", colors: ["#111111", "#c9a227", "#f5ead0"] },
+        { id: "azul-branco", name: "Azul e Branco", desc: "Confiança e limpeza", colors: ["#1d4ed8", "#ffffff", "#93c5fd"] },
+        { id: "verde", name: "Verde Natural", desc: "Natureza e frescor", colors: ["#15803d", "#a3e635", "#ecfccb"] },
+        { id: "vermelho", name: "Vermelho Energia", desc: "Chama atenção", colors: ["#dc2626", "#f97316", "#fff7ed"] },
+        { id: "rosa", name: "Rosa Beleza", desc: "Delicado e moderno", colors: ["#ec4899", "#f9a8d4", "#fdf2f8"] },
+        { id: "neutro", name: "Neutro Minimalista", desc: "Limpo e atemporal", colors: ["#6b7280", "#e5e7eb", "#111827"] },
+        { id: "outra", name: "Outra / me ajudem a escolher", desc: "A gente sugere a ideal pra você", colors: ["#c9a227", "#1d4ed8", "#ec4899"] }
+      ],
+      styles: ["Premium / elegante", "Moderno", "Clássico", "Colorido e alegre", "Minimalista / limpo"],
+      logoOpts: ["Sim", "Não", "Vou enviar depois"],
+      chat: {
+        greet: "Oi! Eu sou a assistente da Nexus Conexões. Vou te fazer umas perguntinhas rápidas pra montar o briefing do seu site — uma de cada vez. Vamos lá?",
+        ask_business: "Primeiro: qual é o nome do seu negócio?",
+        ask_owner: "Prazer! E qual é o seu nome (a pessoa responsável)?",
+        ask_type: "Que tipo de negócio é? Toque numa opção ou digite outro.",
+        ask_typeOther: "Qual é o tipo do seu negócio?",
+        ask_phone: "Qual é o seu WhatsApp ou telefone de contato?",
+        ask_email: "E o seu e-mail? (Pode tocar em Pular se preferir.)",
+        ask_address: "Qual é o endereço do negócio? (Rua, número e cidade.)",
+        ask_services: "Agora me conta: quais serviços você quer mostrar no site, e os preços? Pode falar tudo de uma vez.",
+        ask_servicesHint: "Ex.: Corte — $35 · Barba — $30 · Corte + barba — $55",
+        ask_hours: "Quais são os horários de funcionamento?",
+        ask_palette: "Qual paleta de cores combina com o seu negócio? Toque numa opção — as bolinhas mostram as cores.",
+        ask_style: "E o estilo das fotos do site?",
+        ask_links: "Você tem Instagram ou link do Google do negócio? Pode mandar os dois de uma vez, ou tocar em Pular.",
+        ask_logo: "Você já tem logo do negócio?",
+        ask_special: "Última: algum pedido especial pro seu site? (Se não tiver, toque em “Nenhum”.)",
+        done: "Perfeito! Montei o seu briefing. Confira o resumo abaixo e toque em enviar — aí nossa equipe começa a criar."
+      },
+      sum: {
+        header: "BRIEFING — NEXUS CONEXÕES",
+        business: "Negócio", owner: "Responsável", type: "Tipo de negócio",
+        phone: "WhatsApp/telefone", email: "E-mail", address: "Endereço",
+        services: "Serviços e preços", hours: "Horários", palette: "Paleta de cores",
+        style: "Estilo das fotos", instagram: "Instagram", google: "Link do Google",
+        logo: "Já tem logo", special: "Pedido especial",
+        subject: "Briefing — "
+      }
+    },
+    en: {
+      brandSub: "Websites · Images · Digital presence",
+      title: "Let's build your website your way",
+      subtitle: "Payment confirmed — now tell us how you want your website. Answer the questions or chat with the assistant: at the end, the briefing reaches our team and creation begins.",
+      prepTitle: "Preparation time: up to 5 business days",
+      prepText: "Payment confirmed + briefing received = we start creating. When it's ready, we send you your website.",
+      modeForm: "Answer the questions",
+      modeFormDesc: "Quick form, straight to the point.",
+      modeChat: "I'd rather talk to the assistant",
+      modeChatDesc: "Step-by-step chat — you can even dictate by voice.",
+      q_business: "Business name", ph_business: "E.g.: Carlos Barbershop",
+      q_owner: "Your name (owner / contact)", ph_owner: "Your name",
+      q_phone: "WhatsApp / phone",
+      q_type: "Type of business", ph_typeOther: "What type of business is it?",
+      q_email: "Email",
+      q_address: "Business address", ph_address: "Street, number, city",
+      q_services: "Services and prices",
+      hint_services: "List the services you want to show on the website, with prices.",
+      ph_services: "E.g.: Haircut — $35 · Beard — $30 · Haircut + beard — $55",
+      q_hours: "Opening hours", ph_hours: "E.g.: Mon–Sat, 9am–7pm · Closed Sundays",
+      q_palette: "Website color palette",
+      hint_palette: "Tap the combination that best fits your business.",
+      q_style: "Photo style",
+      q_instagram: "Instagram (if you have one)",
+      q_google: "Google link (if you have one)", ph_google: "Your business link on Google",
+      q_logo: "Do you already have a logo?",
+      q_special: "Any special request?",
+      ph_special: "E.g.: I want a very visible booking button, a bilingual page...",
+      errRequired: "Please fill in this field to continue.",
+      btnReview: "Review and send briefing",
+      btnSend: "Send",
+      sumTitle: "Your briefing is ready!",
+      sumIntro: "Check the summary below. When you send it, our team receives everything and starts creating your website.",
+      attachNote: "Attach your logo and your best business photos to this email.",
+      btnEmail: "Send briefing by email",
+      btnCopy: "Copy summary",
+      btnEdit: "Go back and edit",
+      manualMail: "If the email doesn't open, send it manually to",
+      footerLine: "Briefing page for Nexus Conexões clients.",
+      footerSupport: "Support:",
+      copied: "Summary copied!",
+      copyFail: "Couldn't copy — please select the summary text.",
+      chatPh: "Type your answer...",
+      voiceHint: "Tap the microphone to dictate by voice, or type your answer.",
+      voiceNoSupport: "Your browser doesn't support voice dictation — just type your answer.",
+      voiceListening: "Listening... speak now.", micLabel: "Dictate by voice",
+      skip: "Skip",
+      none: "None",
+      progress: "Question {a} of {b}",
+      types: ["Barbershop", "Restaurant", "Beauty salon", "Cleaning", "Store", "Other"],
+      palettes: [
+        { id: "preto-dourado", name: "Black & Gold", desc: "Premium and elegant", colors: ["#111111", "#c9a227", "#f5ead0"] },
+        { id: "azul-branco", name: "Blue & White", desc: "Trust and clean", colors: ["#1d4ed8", "#ffffff", "#93c5fd"] },
+        { id: "verde", name: "Natural Green", desc: "Nature and freshness", colors: ["#15803d", "#a3e635", "#ecfccb"] },
+        { id: "vermelho", name: "Energy Red", desc: "Stands out", colors: ["#dc2626", "#f97316", "#fff7ed"] },
+        { id: "rosa", name: "Beauty Pink", desc: "Delicate and modern", colors: ["#ec4899", "#f9a8d4", "#fdf2f8"] },
+        { id: "neutro", name: "Minimal Neutral", desc: "Clean and timeless", colors: ["#6b7280", "#e5e7eb", "#111827"] },
+        { id: "outra", name: "Other / help me choose", desc: "We'll suggest the ideal one for you", colors: ["#c9a227", "#1d4ed8", "#ec4899"] }
+      ],
+      styles: ["Premium / elegant", "Modern", "Classic", "Colorful & cheerful", "Minimalist / clean"],
+      logoOpts: ["Yes", "No", "I'll send it later"],
+      chat: {
+        greet: "Hi! I'm the Nexus Conexões assistant. I'll ask you a few quick questions to build your website briefing — one at a time. Let's go?",
+        ask_business: "First: what's the name of your business?",
+        ask_owner: "Nice to meet you! And what's your name (the person in charge)?",
+        ask_type: "What type of business is it? Tap an option or type another.",
+        ask_typeOther: "What type is your business?",
+        ask_phone: "What's your WhatsApp or contact phone number?",
+        ask_email: "And your email? (You can tap Skip if you prefer.)",
+        ask_address: "What's the business address? (Street, number and city.)",
+        ask_services: "Now tell me: which services do you want to show on the website, and the prices? You can say it all at once.",
+        ask_servicesHint: "E.g.: Haircut — $35 · Beard — $30 · Haircut + beard — $55",
+        ask_hours: "What are your opening hours?",
+        ask_palette: "Which color palette fits your business? Tap an option — the dots show the colors.",
+        ask_style: "And the photo style for the website?",
+        ask_links: "Do you have an Instagram or Google link for the business? You can send both at once, or tap Skip.",
+        ask_logo: "Do you already have a logo for the business?",
+        ask_special: "Last one: any special request for your website? (If not, tap “None”.)",
+        done: "Perfect! I've built your briefing. Check the summary below and tap send — then our team starts creating."
+      },
+      sum: {
+        header: "BRIEFING — NEXUS CONEXÕES",
+        business: "Business", owner: "Contact person", type: "Type of business",
+        phone: "WhatsApp/phone", email: "Email", address: "Address",
+        services: "Services and prices", hours: "Opening hours", palette: "Color palette",
+        style: "Photo style", instagram: "Instagram", google: "Google link",
+        logo: "Already has a logo", special: "Special request",
+        subject: "Briefing — "
+      }
+    },
+    es: {
+      brandSub: "Sitios web · Imágenes · Presencia digital",
+      title: "Vamos a crear tu sitio a tu manera",
+      subtitle: "Pago confirmado — ahora cuéntanos cómo quieres tu sitio web. Responde las preguntas o conversa con la asistente: al final, el briefing llega a nuestro equipo y comienza la creación.",
+      prepTitle: "Tiempo de preparación: hasta 5 días hábiles",
+      prepText: "Pago confirmado + briefing recibido = empezamos a crear. Cuando esté listo, te enviamos tu sitio web.",
+      modeForm: "Responder las preguntas",
+      modeFormDesc: "Formulario rápido, directo al punto.",
+      modeChat: "Prefiero hablar con la asistente",
+      modeChatDesc: "Conversación paso a paso — incluso puedes dictar por voz.",
+      q_business: "Nombre del negocio", ph_business: "Ej.: Barbería de Carlos",
+      q_owner: "Tu nombre (responsable)", ph_owner: "Tu nombre",
+      q_phone: "WhatsApp / teléfono",
+      q_type: "Tipo de negocio", ph_typeOther: "¿Qué tipo de negocio es?",
+      q_email: "Correo electrónico",
+      q_address: "Dirección del negocio", ph_address: "Calle, número, ciudad",
+      q_services: "Servicios y precios",
+      hint_services: "Enumera los servicios que quieres mostrar en el sitio, con los precios.",
+      ph_services: "Ej.: Corte — $35 · Barba — $30 · Corte + barba — $55",
+      q_hours: "Horarios de atención", ph_hours: "Ej.: Lun a Sáb, 9h a 19h · Domingo cerrado",
+      q_palette: "Paleta de colores del sitio",
+      hint_palette: "Toca la combinación que más combina con tu negocio.",
+      q_style: "Estilo de las fotos",
+      q_instagram: "Instagram (si tienes)",
+      q_google: "Enlace de Google (si tienes)", ph_google: "Enlace de tu negocio en Google",
+      q_logo: "¿Ya tienes logo?",
+      q_special: "¿Algún pedido especial?",
+      ph_special: "Ej.: quiero un botón de reservas bien visible, página en dos idiomas...",
+      errRequired: "Completa este campo para continuar.",
+      btnReview: "Revisar y enviar briefing",
+      btnSend: "Enviar",
+      sumTitle: "¡Tu briefing está listo!",
+      sumIntro: "Revisa el resumen abajo. Al enviarlo, nuestro equipo recibe todo y comienza a crear tu sitio web.",
+      attachNote: "Adjunta a este correo tu logo y tus mejores fotos del negocio.",
+      btnEmail: "Enviar briefing por correo",
+      btnCopy: "Copiar resumen",
+      btnEdit: "Volver y ajustar",
+      manualMail: "Si el correo no se abre, envíalo manualmente a",
+      footerLine: "Página de briefing para clientes de Nexus Conexões.",
+      footerSupport: "Soporte:",
+      copied: "¡Resumen copiado!",
+      copyFail: "No se pudo copiar — selecciona el texto del resumen.",
+      chatPh: "Escribe tu respuesta...",
+      voiceHint: "Toca el micrófono para dictar por voz, o escribe tu respuesta.",
+      voiceNoSupport: "Tu navegador no admite dictado por voz — solo escribe la respuesta.",
+      voiceListening: "Escuchando... habla ahora.", micLabel: "Dictar por voz",
+      skip: "Saltar",
+      none: "Ninguno",
+      progress: "Pregunta {a} de {b}",
+      types: ["Barbería", "Restaurante", "Salón de belleza", "Limpieza", "Tienda", "Otro"],
+      palettes: [
+        { id: "preto-dourado", name: "Negro y Dorado", desc: "Premium y elegante", colors: ["#111111", "#c9a227", "#f5ead0"] },
+        { id: "azul-branco", name: "Azul y Blanco", desc: "Confianza y limpieza", colors: ["#1d4ed8", "#ffffff", "#93c5fd"] },
+        { id: "verde", name: "Verde Natural", desc: "Naturaleza y frescura", colors: ["#15803d", "#a3e635", "#ecfccb"] },
+        { id: "vermelho", name: "Rojo Energía", desc: "Llama la atención", colors: ["#dc2626", "#f97316", "#fff7ed"] },
+        { id: "rosa", name: "Rosa Belleza", desc: "Delicado y moderno", colors: ["#ec4899", "#f9a8d4", "#fdf2f8"] },
+        { id: "neutro", name: "Neutro Minimalista", desc: "Limpio y atemporal", colors: ["#6b7280", "#e5e7eb", "#111827"] },
+        { id: "outra", name: "Otra / ayúdenme a elegir", desc: "Te sugerimos la ideal para ti", colors: ["#c9a227", "#1d4ed8", "#ec4899"] }
+      ],
+      styles: ["Premium / elegante", "Moderno", "Clásico", "Colorido y alegre", "Minimalista / limpio"],
+      logoOpts: ["Sí", "No", "Lo envío después"],
+      chat: {
+        greet: "¡Hola! Soy la asistente de Nexus Conexões. Te haré unas preguntas rápidas para armar el briefing de tu sitio — una a la vez. ¿Empezamos?",
+        ask_business: "Primero: ¿cuál es el nombre de tu negocio?",
+        ask_owner: "¡Un placer! ¿Y cuál es tu nombre (la persona responsable)?",
+        ask_type: "¿Qué tipo de negocio es? Toca una opción o escribe otro.",
+        ask_typeOther: "¿Qué tipo de negocio es?",
+        ask_phone: "¿Cuál es tu WhatsApp o teléfono de contacto?",
+        ask_email: "¿Y tu correo electrónico? (Puedes tocar Saltar si prefieres.)",
+        ask_address: "¿Cuál es la dirección del negocio? (Calle, número y ciudad.)",
+        ask_services: "Ahora cuéntame: ¿qué servicios quieres mostrar en el sitio, y los precios? Puedes decirlo todo de una vez.",
+        ask_servicesHint: "Ej.: Corte — $35 · Barba — $30 · Corte + barba — $55",
+        ask_hours: "¿Cuáles son los horarios de atención?",
+        ask_palette: "¿Qué paleta de colores combina con tu negocio? Toca una opción — los puntos muestran los colores.",
+        ask_style: "¿Y el estilo de las fotos del sitio?",
+        ask_links: "¿Tienes Instagram o enlace de Google del negocio? Puedes enviar ambos a la vez, o tocar Saltar.",
+        ask_logo: "¿Ya tienes logo del negocio?",
+        ask_special: "Última: ¿algún pedido especial para tu sitio? (Si no tienes, toca “Ninguno”.)",
+        done: "¡Perfecto! Armé tu briefing. Revisa el resumen abajo y toca enviar — así nuestro equipo empieza a crear."
+      },
+      sum: {
+        header: "BRIEFING — NEXUS CONEXÕES",
+        business: "Negocio", owner: "Responsable", type: "Tipo de negocio",
+        phone: "WhatsApp/teléfono", email: "Correo", address: "Dirección",
+        services: "Servicios y precios", hours: "Horarios", palette: "Paleta de colores",
+        style: "Estilo de las fotos", instagram: "Instagram", google: "Enlace de Google",
+        logo: "Ya tiene logo", special: "Pedido especial",
+        subject: "Briefing — "
+      }
+    }
+  };
+
+  var lang = "pt";
+  var T = function () { return I18N[lang]; };
+
+  /* ================= state ================= */
+  var data = {
+    business: "", owner: "", phone: "", type: "", email: "", address: "",
+    services: "", hours: "", palette: "", paletteColors: "", style: "",
+    instagram: "", google: "", logo: "", special: ""
+  };
+  var selType = -1, selPalette = -1, selStyle = -1, selLogo = -1;
+
+  function $(id) { return document.getElementById(id); }
+  function esc(s) { return String(s == null ? "" : s); }
+
+  /* ================= option builders ================= */
+  function dotsHTML(colors) {
+    return '<span class="dots">' + colors.map(function (c) {
+      return '<span class="dot" style="background:' + c + '"></span>';
+    }).join("") + "</span>";
+  }
+
+  function buildChips(containerId, items, getSel, onPick, withDots) {
+    var box = $(containerId);
+    box.innerHTML = "";
+    items.forEach(function (item, i) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "chip";
+      b.setAttribute("aria-pressed", getSel() === i ? "true" : "false");
+      b.innerHTML = (withDots ? dotsHTML(item.colors) : "") + '<span class="clabel"></span>';
+      b.querySelector(".clabel").textContent = item.name || item;
+      b.addEventListener("click", function () { onPick(i); });
+      box.appendChild(b);
+    });
+  }
+
+  function buildPalettes() {
+    var grid = $("paletteGrid");
+    grid.innerHTML = "";
+    T().palettes.forEach(function (p, i) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "palette";
+      b.setAttribute("aria-pressed", selPalette === i ? "true" : "false");
+      b.innerHTML = dotsHTML(p.colors) +
+        '<span><span class="pn"></span><br><span class="pd"></span></span>';
+      b.querySelector(".pn").textContent = p.name;
+      b.querySelector(".pd").textContent = p.desc;
+      b.addEventListener("click", function () {
+        selPalette = i;
+        data.palette = p.name;
+        data.paletteColors = p.colors.join(", ");
+        buildPalettes();
+      });
+      grid.appendChild(b);
+    });
+  }
+
+  function buildFormOptions() {
+    buildChips("typeChips", T().types, function () { return selType; }, function (i) {
+      selType = i;
+      data.type = T().types[i];
+      $("f_typeOther").classList.toggle("hidden", i !== T().types.length - 1);
+      if (i === T().types.length - 1) { data.type = $("f_typeOther").value.trim(); $("f_typeOther").focus(); }
+      buildFormOptions();
+    });
+    buildChips("styleChips", T().styles, function () { return selStyle; }, function (i) {
+      selStyle = i; data.style = T().styles[i]; buildFormOptions();
+    });
+    buildChips("logoChips", T().logoOpts, function () { return selLogo; }, function (i) {
+      selLogo = i; data.logo = T().logoOpts[i]; buildFormOptions();
+    });
+    buildPalettes();
+  }
+
+  /* When language changes, keep selections by index: re-derive labels */
+  function relabelSelections() {
+    if (selType >= 0) data.type = (selType === T().types.length - 1 && $("f_typeOther").value.trim()) ? $("f_typeOther").value.trim() : T().types[selType];
+    if (selPalette >= 0) { data.palette = T().palettes[selPalette].name; data.paletteColors = T().palettes[selPalette].colors.join(", "); }
+    if (selStyle >= 0) data.style = T().styles[selStyle];
+    if (selLogo >= 0) data.logo = T().logoOpts[selLogo];
+    if (chatAnswers.typeIdx >= 0) data.type = chatAnswers.typeIdx === T().types.length - 1 ? (chatAnswers.typeOther || data.type) : T().types[chatAnswers.typeIdx];
+    if (chatAnswers.paletteIdx >= 0) { data.palette = T().palettes[chatAnswers.paletteIdx].name; data.paletteColors = T().palettes[chatAnswers.paletteIdx].colors.join(", "); }
+    if (chatAnswers.styleIdx >= 0) data.style = T().styles[chatAnswers.styleIdx];
+    if (chatAnswers.logoIdx >= 0) data.logo = T().logoOpts[chatAnswers.logoIdx];
+  }
+
+  /* ================= language ================= */
+  function applyLang(l) {
+    lang = l;
+    document.documentElement.lang = l === "pt" ? "pt-BR" : l;
+    document.querySelectorAll(".langs button").forEach(function (b) {
+      b.setAttribute("aria-pressed", b.getAttribute("data-lang") === l ? "true" : "false");
+    });
+    document.querySelectorAll("[data-i18n]").forEach(function (el) {
+      var k = el.getAttribute("data-i18n");
+      if (T()[k]) el.textContent = T()[k];
+    });
+    document.querySelectorAll("[data-i18n-ph]").forEach(function (el) {
+      var k = el.getAttribute("data-i18n-ph");
+      if (T()[k]) el.setAttribute("placeholder", T()[k]);
+    });
+    $("chatText").setAttribute("placeholder", T().chatPh);
+    $("micBtn").setAttribute("aria-label", T().micLabel);
+    $("voiceHint").textContent = voiceSupported() ? T().voiceHint : T().voiceNoSupport;
+    relabelSelections();
+    buildFormOptions();
+    if (chatStarted) restartChat(false);
+    if (!$("summaryPanel").classList.contains("hidden")) renderSummary();
+  }
+  document.querySelectorAll(".langs button").forEach(function (b) {
+    b.addEventListener("click", function () { applyLang(b.getAttribute("data-lang")); });
+  });
+
+  /* ================= modes ================= */
+  var mode = "form";
+  function setMode(m) {
+    mode = m;
+    $("modeFormBtn").setAttribute("aria-pressed", m === "form" ? "true" : "false");
+    $("modeChatBtn").setAttribute("aria-pressed", m === "chat" ? "true" : "false");
+    $("formPanel").classList.toggle("hidden", m !== "form");
+    $("chatPanel").classList.toggle("hidden", m !== "chat");
+    $("summaryPanel").classList.add("hidden");
+    if (m === "chat" && !chatStarted) startChat();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+  $("modeFormBtn").addEventListener("click", function () { setMode("form"); });
+  $("modeChatBtn").addEventListener("click", function () { setMode("chat"); });
+
+  /* ================= form ================= */
+  function readForm() {
+    data.business = $("f_business").value.trim();
+    data.owner = $("f_owner").value.trim();
+    data.phone = $("f_phone").value.trim();
+    data.email = $("f_email").value.trim();
+    data.address = $("f_address").value.trim();
+    data.services = $("f_services").value.trim();
+    data.hours = $("f_hours").value.trim();
+    data.instagram = $("f_instagram").value.trim();
+    data.google = $("f_google").value.trim();
+    data.special = $("f_special").value.trim();
+    if (selType === T().types.length - 1) data.type = $("f_typeOther").value.trim();
+  }
+  $("f_typeOther").addEventListener("input", function () {
+    if (selType === T().types.length - 1) data.type = this.value.trim();
+  });
+
+  function markBad(inputId, errId, bad) {
+    $(inputId).classList.toggle("bad", bad);
+    $(errId).classList.toggle("show", bad);
+    return !bad;
+  }
+  $("formPanel").addEventListener("submit", function (e) {
+    e.preventDefault();
+    readForm();
+    var ok = true;
+    ok = markBad("f_business", "e_business", !data.business) && ok;
+    ok = markBad("f_owner", "e_owner", !data.owner) && ok;
+    ok = markBad("f_phone", "e_phone", !data.phone) && ok;
+    if (!ok) {
+      var firstBad = document.querySelector(".tin.bad");
+      if (firstBad) firstBad.scrollIntoView({ behavior: "smooth", block: "center" });
+      return;
+    }
+    showSummary();
+  });
+
+  /* ================= summary ================= */
+  function buildSummaryText() {
+    var s = T().sum;
+    var lines = [s.header, "================================", ""];
+    function row(label, val) { if (val) lines.push(label + ": " + val); }
+    row(s.business, data.business);
+    row(s.owner, data.owner);
+    row(s.type, data.type);
+    row(s.phone, data.phone);
+    row(s.email, data.email);
+    row(s.address, data.address);
+    if (data.services) { lines.push(""); lines.push(s.services + ":"); lines.push(data.services); }
+    if (data.hours) { lines.push(""); lines.push(s.hours + ": " + data.hours); }
+    if (data.palette) lines.push(s.palette + ": " + data.palette + (data.paletteColors ? " (" + data.paletteColors + ")" : ""));
+    row(s.style, data.style);
+    row(s.instagram, data.instagram);
+    row(s.google, data.google);
+    row(s.logo, data.logo);
+    if (data.special) { lines.push(""); lines.push(s.special + ":"); lines.push(data.special); }
+    lines.push("");
+    lines.push("— " + T().attachNote);
+    return lines.join("\n");
+  }
+  function renderSummary() {
+    var text = buildSummaryText();
+    $("summaryText").textContent = text;
+    var subject = T().sum.subject + (data.business || "—");
+    $("mailtoBtn").href = "mailto:" + NEXUS_EMAIL +
+      "?subject=" + encodeURIComponent(subject) +
+      "&body=" + encodeURIComponent(text);
+  }
+  function showSummary() {
+    renderSummary();
+    $("formPanel").classList.add("hidden");
+    $("chatPanel").classList.add("hidden");
+    $("summaryPanel").classList.remove("hidden");
+    $("summaryPanel").scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+  $("editBtn").addEventListener("click", function () { setMode(mode); });
+  $("copyBtn").addEventListener("click", function () {
+    var text = $("summaryText").textContent;
+    function done() { toast(T().copied); }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done, function () { fallbackCopy(text); });
+    } else { fallbackCopy(text); }
+  });
+  function fallbackCopy(text) {
+    var ta = document.createElement("textarea");
+    ta.value = text; ta.style.position = "fixed"; ta.style.opacity = "0";
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand("copy"); toast(T().copied); }
+    catch (e) { toast(T().copyFail); }
+    document.body.removeChild(ta);
+  }
+  var toastTimer = null;
+  function toast(msg) {
+    var el = $("toast");
+    el.textContent = msg;
+    el.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { el.classList.remove("show"); }, 2600);
+  }
+
+  /* ================= chat ================= */
+  var chatStarted = false;
+  var chatAnswers = { typeIdx: -1, typeOther: "", paletteIdx: -1, styleIdx: -1, logoIdx: -1 };
+  var steps = [
+    { key: "business", ask: "ask_business" },
+    { key: "owner", ask: "ask_owner" },
+    { key: "type", ask: "ask_type", kind: "types" },
+    { key: "phone", ask: "ask_phone" },
+    { key: "email", ask: "ask_email", skippable: true },
+    { key: "address", ask: "ask_address", skippable: true },
+    { key: "services", ask: "ask_services", hint: "ask_servicesHint" },
+    { key: "hours", ask: "ask_hours", skippable: true },
+    { key: "palette", ask: "ask_palette", kind: "palettes" },
+    { key: "style", ask: "ask_style", kind: "styles" },
+    { key: "links", ask: "ask_links", skippable: true },
+    { key: "logo", ask: "ask_logo", kind: "logo" },
+    { key: "special", ask: "ask_special", kind: "special" }
+  ];
+  var stepIdx = 0;
+
+  function addMsg(text, who) {
+    var d = document.createElement("div");
+    d.className = "msg " + who;
+    d.textContent = text;
+    $("chatLog").appendChild(d);
+    d.scrollIntoView({ behavior: "smooth", block: "end" });
+    return d;
+  }
+  function clearQuick() { $("chatQuick").innerHTML = ""; }
+  function quickBtn(label, fn, html) {
+    var b = document.createElement("button");
+    b.type = "button";
+    b.className = "chip";
+    if (html) b.innerHTML = html; else b.textContent = label;
+    b.addEventListener("click", fn);
+    $("chatQuick").appendChild(b);
+    return b;
+  }
+  function updateProgress() {
+    var pct = Math.round((stepIdx / steps.length) * 100);
+    $("chatProgress").style.width = pct + "%";
+    $("chatProgressLabel").textContent = stepIdx < steps.length
+      ? T().progress.replace("{a}", stepIdx + 1).replace("{b}", steps.length)
+      : "";
+  }
+
+  function startChat() {
+    chatStarted = true;
+    stepIdx = 0;
+    $("chatLog").innerHTML = "";
+    addMsg(T().chat.greet, "bot");
+    askStep();
+  }
+  function restartChat(keepData) {
+    if (!keepData) { /* keep answers; just re-render current step in new language */ }
+    $("chatLog").innerHTML = "";
+    addMsg(T().chat.greet, "bot");
+    /* replay answered steps briefly */
+    for (var i = 0; i < stepIdx && i < steps.length; i++) {
+      var st = steps[i];
+      addMsg(T().chat[st.ask], "bot");
+      var val = displayValue(st);
+      if (val) addMsg(val, "user");
+    }
+    if (stepIdx < steps.length) askStep();
+  }
+
+  function displayValue(st) {
+    if (st.key === "links") {
+      var parts = [];
+      if (data.instagram) parts.push(data.instagram);
+      if (data.google) parts.push(data.google);
+      return parts.join(" · ");
+    }
+    if (st.key === "palette") return data.palette;
+    return data[st.key] || "";
+  }
+
+  function askStep(replay) {
+    clearQuick();
+    updateProgress();
+    var st = steps[stepIdx];
+    if (!st) { finishChat(); return; }
+    if (!replay) addMsg(T().chat[st.ask], "bot");
+    if (st.hint) {
+      var h = document.createElement("div");
+      h.className = "msg bot";
+      h.style.opacity = ".75"; h.style.fontSize = "13.5px";
+      h.textContent = T().chat[st.hint];
+      $("chatLog").appendChild(h);
+    }
+    var input = $("chatText");
+    input.value = "";
+    if (st.kind === "types") {
+      T().types.forEach(function (name, i) {
+        quickBtn(name, function () { pickType(i); });
+      });
+    } else if (st.kind === "palettes") {
+      T().palettes.forEach(function (p, i) {
+        var b = quickBtn(null, function () { pickPalette(i); },
+          dotsHTML(p.colors) + '<span class="qlabel"></span>');
+        b.querySelector(".qlabel").textContent = p.name;
+      });
+    } else if (st.kind === "styles") {
+      T().styles.forEach(function (name) { quickBtn(name, function () { answerChat(name, "style"); }); });
+    } else if (st.kind === "logo") {
+      T().logoOpts.forEach(function (name, i) {
+        quickBtn(name, function () { chatAnswers.logoIdx = i; answerChat(name, "logo"); });
+      });
+    } else if (st.kind === "special") {
+      quickBtn(T().none, function () { answerChat(T().none, "specialNone"); });
+    }
+    if (st.skippable) {
+      quickBtn(T().skip, function () { answerChat("", "skip"); });
+    }
+    input.focus({ preventScroll: true });
+  }
+
+  function pickType(i) {
+    chatAnswers.typeIdx = i;
+    if (i === T().types.length - 1) {
+      addMsg(T().types[i], "user");
+      addMsg(T().chat.ask_typeOther, "bot");
+      steps[stepIdx].awaitingOther = true;
+      clearQuick();
+      $("chatText").focus();
+      return;
+    }
+    data.type = T().types[i];
+    selType = i;
+    addMsg(T().types[i], "user");
+    nextStep();
+  }
+  function pickPalette(i) {
+    var p = T().palettes[i];
+    chatAnswers.paletteIdx = i;
+    selPalette = i;
+    data.palette = p.name;
+    data.paletteColors = p.colors.join(", ");
+    addMsg(p.name, "user");
+    nextStep();
+  }
+
+  function nextStep() {
+    stepIdx++;
+    if (stepIdx >= steps.length) { finishChat(); return; }
+    askStep();
+  }
+
+  function answerChat(raw, modeFlag) {
+    var st = steps[stepIdx];
+    var val = (raw || "").trim();
+    if (modeFlag === "skip") {
+      addMsg(T().skip, "user");
+      nextStep();
+      return;
+    }
+    if (modeFlag === "specialNone") {
+      data.special = "";
+      addMsg(T().none, "user");
+      nextStep();
+      return;
+    }
+    if (!val) return;
+    addMsg(val, "user");
+    if (st.awaitingOther) {
+      chatAnswers.typeOther = val;
+      data.type = val;
+      st.awaitingOther = false;
+      nextStep();
+      return;
+    }
+    if (st.key === "links") {
+      /* split instagram / google links from one message */
+      var parts = val.split(/[\n,;]+/).map(function (x) { return x.trim(); }).filter(Boolean);
+      parts.forEach(function (p) {
+        if (/google|maps|g\.page|goo\.gl/i.test(p) && !data.google) data.google = p;
+        else if (!data.instagram) data.instagram = p;
+        else if (!data.google) data.google = p;
+      });
+      if (!parts.length) data.instagram = val;
+    } else if (st.key === "style") {
+      var si = T().styles.indexOf(val);
+      if (si >= 0) { chatAnswers.styleIdx = si; selStyle = si; }
+      data.style = val;
+    } else if (st.key === "logo") {
+      data.logo = val;
+    } else {
+      data[st.key] = val;
+    }
+    nextStep();
+  }
+
+  function finishChat() {
+    clearQuick();
+    updateProgress();
+    $("chatProgress").style.width = "100%";
+    addMsg(T().chat.done, "bot");
+    setTimeout(showSummary, 650);
+  }
+
+  $("chatSend").addEventListener("click", function () {
+    var st = steps[stepIdx];
+    if (!st) return;
+    var v = $("chatText").value;
+    if (st.kind && st.kind !== "types" && !st.awaitingOther && st.kind !== "palettes") {
+      /* quick-reply steps also accept typed text */
+    }
+    if (st.kind === "palettes" && !st.awaitingOther) {
+      /* palettes need a tap; typed text ignored unless it matches a name */
+      var low = v.trim().toLowerCase();
+      var idx = -1;
+      T().palettes.forEach(function (p, i) { if (p.name.toLowerCase() === low) idx = i; });
+      if (idx >= 0) { pickPalette(idx); $("chatText").value = ""; return; }
+      if (v.trim()) { toast(T().chat.ask_palette); }
+      return;
+    }
+    if (st.kind === "types" && !st.awaitingOther) {
+      var low2 = v.trim().toLowerCase();
+      var ti = -1;
+      T().types.forEach(function (n, i) { if (n.toLowerCase() === low2) ti = i; });
+      if (ti >= 0) { pickType(ti); $("chatText").value = ""; return; }
+      if (v.trim()) { chatAnswers.typeIdx = T().types.length - 1; chatAnswers.typeOther = v.trim(); data.type = v.trim(); addMsg(v.trim(), "user"); $("chatText").value = ""; nextStep(); }
+      return;
+    }
+    answerChat(v);
+  });
+  $("chatText").addEventListener("keydown", function (e) {
+    if (e.key === "Enter") { e.preventDefault(); $("chatSend").click(); }
+  });
+
+  /* ================= voice dictation ================= */
+  function voiceSupported() {
+    return !!(window.SpeechRecognition || window.webkitSpeechRecognition);
+  }
+  var recog = null, listening = false;
+  $("micBtn").addEventListener("click", function () {
+    var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SR) { toast(T().voiceNoSupport); return; }
+    if (listening && recog) { recog.stop(); return; }
+    recog = new SR();
+    recog.lang = lang === "pt" ? "pt-BR" : lang === "es" ? "es-ES" : "en-US";
+    recog.interimResults = false;
+    recog.maxAlternatives = 1;
+    recog.onstart = function () {
+      listening = true;
+      $("micBtn").classList.add("rec");
+      $("voiceHint").textContent = T().voiceListening;
+    };
+    recog.onend = function () {
+      listening = false;
+      $("micBtn").classList.remove("rec");
+      $("voiceHint").textContent = T().voiceHint;
+    };
+    recog.onerror = function () {
+      listening = false;
+      $("micBtn").classList.remove("rec");
+      $("voiceHint").textContent = T().voiceHint;
+    };
+    recog.onresult = function (ev) {
+      var txt = ev.results[0][0].transcript;
+      $("chatText").value = txt;
+      $("chatSend").click();
+    };
+    try { recog.start(); } catch (e) { /* already running */ }
+  });
+
+  /* ================= init ================= */
+  buildFormOptions();
+  $("chatText").setAttribute("placeholder", T().chatPh);
+    $("micBtn").setAttribute("aria-label", T().micLabel);
+  $("voiceHint").textContent = voiceSupported() ? T().voiceHint : T().voiceNoSupport;
+  if (!voiceSupported()) $("micBtn").style.opacity = ".45";
+})();
+</script>
+  </body>
+</html>
